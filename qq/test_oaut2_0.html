@@ -1,0 +1,203 @@
+ <html lang="zh-cn">
+    <head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>
+            Demo for QQ登录oauth2.0
+        </title>
+		<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc.js#appId=100269916" charset="utf-8"></script>
+        <script type="text/javascript">
+            var childWindow;
+            function toQzoneLogin()
+            {
+                childWindow = window.open("oauth/qq_login.php","TencentLogin","width=450,height=320,menubar=0,scrollbars=1, resizable=1,status=1,titlebar=0,toolbar=0,location=1");
+            } 
+            
+            function closeChildWindow()
+            {
+                childWindow.close();
+            }
+        </script>
+    </head>
+    <body>
+        <font size=10><a href="http://wiki.opensns.qq.com/wiki/%E3%80%90QQ%E7%99%BB%E5%BD%95%E3%80%91Qzone_OAuth2.0%E7%AE%80%E4%BB%8B" target="_blank">新手教程</a></font>
+        <p>请开发者修改comm/config.php文件中的$_SESSION["appid"]，$_SESSION["appkey"], $_SESSION["callback"]三个变量的值，以确保可以正常登录.</p>
+        <p>如果要支持字域名共享session,请参考comm/session.php 150行到169行配置.</p>
+        <p>如果要支持不同机器之间共享session,请参考comm/session.php 178行配置.</p>
+        <br><br>
+        <a href="#" onclick='toQzoneLogin()'><img src="img/qq_login.png"></a>
+        <br><br>
+        <a href="user/get_user_info.php"    target="_blank">获取用户信息</a>
+		<br><br>
+        <a href="share/add_share.html"      target="_blank">添加分享</a>
+        <br><br>
+        <a href="photo/list_album.php"      target="_blank">获取相册列表</a>
+        <br><br>
+        <a href="photo/add_album.html"      target="_blank">创建相册</a>
+        <br><br>
+        <a href="photo/upload_pic.html"     target="_blank">上传相片</a>
+        <br><br>
+        <a href="blog/add_blog.html"     target="_blank">发表日志</a>
+        <br><br>
+        <a href="topic/add_topic.html"     target="_blank">发表说说</a>
+        <br><br>
+        <a href="weibo/add_weibo.html"     target="_blank">发表微博</a>
+		<span id="qq_login_btn"></span>
+		<script type="text/javascript">
+
+	function weibo(){
+		if(QC.Login.check()){
+			var ctt = document.getElementById("weibo_ctt").value;
+			if(!ctt) {
+				alert('亲！把数据填完。。');
+				return;
+			}
+
+			var weibo_back = document.getElementById("weibo_back");
+			weibo_back.value = "";
+			QC.api("add_t", {content:ctt})
+				.success(function(s){//成功回调
+					alert('发送微博成功，请到腾讯微博内查看！');
+					QC.Console.log(' [S] weibo seq no. : ' + s.seq);
+				})
+				.error(function(f){//失败回调
+					alert('发送微博失败，错误码：'+f.code);
+					QC.Console.log(" [E] weibo seq no. "+f.seq);
+				})
+				.complete(function(c){//完成请求回调
+					weibo_back.value = c.stringifyData();
+				});
+		}else{
+			alert("请登录后体验");
+		}
+	}
+
+	function fenxiang(){
+		if(QC.Login.check()){
+			var paras = {
+				images:document.getElementById("fenxiang_images").value,
+				title:document.getElementById("fenxiang_title").value,
+				url:document.getElementById("fenxiang_url").value,
+				comment:document.getElementById("fenxiang_comment").value,
+				summary:document.getElementById("fenxiang_summary").value
+			};
+
+			for(var i in paras) {
+				if(!(paras[i]+"")) {
+					alert('亲！把数据填完。。');
+					return;
+				}
+			}
+
+			var fenxiang_back = document.getElementById("fenxiang_back");
+			fenxiang_back.value = "";
+			QC.api("add_share", paras)
+				.success(function(s){//请自行改写成功回调
+					alert('分享成功，请到空间内查看！');
+					QC.Console.log(" [S] fenxiang seq no. "+s.seq);
+				})
+				.error(function(f){//请自行改写失败回调
+					alert('分享失败，错误码：'+f.code);
+					QC.Console.log(" [E] fenxiang seq no. "+f.seq);
+				})
+				.complete(function(c){//请自行改写完成请求回调
+					fenxiang_back.value = c.stringifyData();
+				});
+		}else{
+			alert("请登录后体验");
+		}
+	}
+
+	function getInfo() {
+		if(QC.Login.check()){
+			var getInfo_back = document.getElementById("getInfo_back");
+			getInfo_back.value = "";
+		
+			QC.api("get_user_info")
+				.success(function(s){//成功回调
+					alert("获取用户信息成功！当前用户昵称为："+s.data.nickname);
+				})
+				.error(function(f){//失败回调
+					alert("获取用户信息失败！");
+				})
+				.complete(function(c){//完成请求回调
+					alert("获取用户信息完成！");
+					getInfo_back.value = c.stringifyData();
+				});
+		}else{
+			alert("请登录后体验");
+		}
+	}
+
+	function getToken() {
+		if(QC.Login.check()){
+			QC.Login.getMe(function(openId, accessToken){
+				alert(["当前登录用户的", "openid为："+openId, "accessToken为："+accessToken].join("\n"));	
+			});
+			//这里可以调用自己的保存接口
+			//...
+		}else{
+			alert("请登录后体验");
+		}
+	}
+
+	//callback为jssdk保留字，测试是否会覆盖当前页面函数
+	function callback(){
+		alert("我很好，我很好");
+	}
+
+
+	function pageInit() {
+		document.getElementById("qq_login_btn").innerHTML = document.getElementById("qq_login_btn").getAttribute("_origText");
+	}
+
+	//获取jsdoc示例
+	function getDoc() {
+		QC.api.getDoc("get_user_info", function(doc){
+			var str = QC.JSON.stringify(doc);
+			alert(str);
+		});
+	}
+
+	pageInit();
+
+	//加入QQ登录按钮
+	QC.Login({
+		btnId:"qq_login_btn"
+	});
+
+
+
+</script>
+		<script type="text/javascript">
+			//从页面收集OpenAPI必要的参数。get_user_info不需要输入参数，因此paras中没有参数
+			var paras = {};
+
+			//用JS SDK调用OpenAPI
+			QC.api("get_user_info", paras)
+				//指定接口访问成功的接收函数，s为成功返回Response对象
+				.success(function(s){
+					//成功回调，通过s.data获取OpenAPI的返回数据
+					alert("获取用户信息成功！当前用户昵称为："+s.data.nickname);
+				})
+				//指定接口访问失败的接收函数，f为失败返回Response对象
+				.error(function(f){
+					//失败回调
+					alert("获取用户信息失败！");
+				})
+				//指定接口完成请求后的接收函数，c为完成请求返回Response对象
+				.complete(function(c){
+					//完成请求回调
+					alert("获取用户信息完成！");
+				});
+				f(QC.Login.check()){//如果已登录
+					QC.Login.getMe(function(openId, accessToken){
+						alert(["当前登录用户的", "openId为："+openId, "accessToken为："+accessToken].join("\n"));
+					});
+					//这里可以调用自己的保存接口
+					//...
+				}
+		</script>
+
+					
+    </body>
+</html>

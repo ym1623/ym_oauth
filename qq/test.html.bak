@@ -1,0 +1,309 @@
+<html lang="zh-cn"><head> 
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	 <title>Client Flow Example - JSSDK</title>
+	 <style type="text/css">
+		#result b{color:red;}
+
+		#qq_login_btn {margin-left:20px; font-weight:bolder;}
+
+		.title {font-size:14px; font-weight:bold;}
+
+		.share_cot label {width:80px; display:inline-block;}
+		.share_cot input[type='text'] {width:200px;}
+		.share_cot i {font-size:12px; font-style:normal; margin-left:10px; font-weight:bold;}
+		.share_cot i {font-weight:bold;}
+		.mono {font-size:12px; /*color:#2f4f4f;*/}
+
+		 .pad_1 {margin-left:20px;}
+		 .pad_2 {margin-left:30px;}
+
+		 .callback {color:blue;}
+
+		 textarea {border: groove 1px gray; width:480px; font-size:12px;}
+
+		 .demo_right, .demo_left{float:left;}
+		.demo_left {width:580px;}
+		 /*.demo_right{float:right;}*/
+
+		 .clear{clear:both;}
+		.none {display:none;}
+
+		 .demo_code {border:1px dotted gray; background: #efefef; margin-left:30px;}
+
+		 hr {border-top:2px solid #ccc; margin:12px 0; background: #ccc;}
+		 .sub_hr {/*margin-left:30px; */border-top:1px solid #eaeaea; background: #eaeaea;}
+	 </style>
+
+   </head> 
+   <body> 
+   
+
+<div class="share_cot">
+	<p class="title">2 请在html页面需要插入QQ登录按钮的位置，粘贴如下示例代码： </p>
+	<div class="demo_left">
+		<span class="pad_1">您可以点击下面的QQ登录按钮，体验QQ登录流程：</span><br>
+
+		<span id="qq_login_btn" _origtext="get_user_info 加载昵称中..." title="nickname"><span class="qc_item figure"><img src="http://qzapp.qlogo.cn/qzapp/100229030/4604B21442C2776BC9E85089E853AEC7/30" class="undefined"></span><span class="qc_item nickname" style="margin-left:6px;">★わ浪漫少帅</span><span class="qc_item logout"><a href="javascript:QC.Login.signOut();" style="margin-left:6px;">退出</a></span></span>
+		<span id="OO11" _origtext="get_user_info 加载昵称中..." title="nickname"></span><br>
+		<span class="pad_1">您也可以在代码中<a href="http://wiki.opensns.qq.com/wiki/%E3%80%90QQ%E7%99%BB%E5%BD%95%E3%80%91JS_SDK%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E#3._.E8.87.AA.E5.AE.9A.E4.B9.89.E7.99.BB.E5.BD.95.E6.8C.89.E9.92.AE" target="_blank">自定义登录按钮</a>。</span>
+	</div>
+	<div class="demo_right">
+		<i>示例代码:</i><br>
+<textarea style="height:120px; width:600px;" readonly="1" class="demo_code">&lt;span id="qq_login_btn"&gt;&lt;/span&gt;
+&lt;script type="text/javascript"&gt;
+	QC.Login({
+		btnId:"qq_login_btn"	//插入按钮的节点id
+	});
+&lt;/script&gt;
+</textarea>
+
+	</div>
+	<div class="clear">
+	<br>
+	<br>
+</div>
+
+<hr class="sub_hr">
+
+<hr class="sub_hr">
+
+<div class="share_cot">
+	<p></p><!--QC.api("https://graph.qq.com/share/add_share", {images:'http://pica.nipic.com/2007-12-13/20071213112722686_2.jpg', title:'·OOXX·', url:'http://jinjingcao.qzone.qq.com/', comment:'可以评论不？', summary:'敢不敢！@# 用JS-SDK 来条分享呢 《》<>:$#@{}[] '}, "", "post")-->
+	<div class="demo_left">
+		<span class="title">3.2 调用OpenAPI<a href="http://wiki.opensns.qq.com/wiki/%E3%80%90QQ%E7%99%BB%E5%BD%95%E3%80%91add_share" target="_blank">【QQ登录】add_share</a> 发分享 [相同url参数只能分享一次]：</span><br>
+		<i>发送参数:</i><br>
+		<div class="pad_2">
+			<div class="none">
+				<label>title:</label><input id="fenxiang_title" value="#QQ互联JSSDK测试#我是标题啊标题"><br>
+				<label>url:</label><input id="fenxiang_url" value="http://connect.qq.com/"><br>
+				<label>images:</label><input id="fenxiang_images" value="http://y.photo.qq.com/img?s=OnbP8BwOF&amp;l=y.jpg"><br>
+				<label>comment:</label><input id="fenxiang_comment" value="我是评论：转发原因"><br>
+				<label>summary:</label><input id="fenxiang_summary" value="我是摘要：内容说明"><br>
+				<label>content:</label><textarea rows="4" cols="" id="fenxiang_ctt">取次花丛懒回顾，半缘修道半缘君。 我是分享 # jssdk</textarea><br>
+			</div>
+			<pre class="mono">{
+	images:"http://y.photo.qq.com/img?s=OnbP8BwOF&amp;l=y.jpg",
+	title:"#QQ互联JSSDK测试#我是标题啊标题",
+	url:"http://connect.qq.com/",
+	comment:"我是评论：转发原因",
+	summary:"我是摘要：内容说明"
+}
+			</pre>
+			<label><input type="button" value=" 发送 " onclick="fenxiang();"></label>
+		</div>
+		<br>
+		<i>返回数据:</i><br>
+		<div class="pad_2">
+			<label></label><textarea rows="3" cols="20" readonly="1" class="callback" id="fenxiang_back"></textarea>
+		</div>
+	</div>
+	<div class="clear">
+</div>
+
+<hr class="sub_hr">
+
+
+<div class="share_cot">
+	<p></p>
+	<div class="demo_left">
+		<span class="title">3.3 调用OpenAPI<a href="http://wiki.opensns.qq.com/wiki/%E3%80%90QQ%E7%99%BB%E5%BD%95%E3%80%91add_t" target="_blank">【QQ登录】add_t</a> 发微博：</span><br>
+		<i>发送参数:</i><br>
+		<div class="pad_2">
+			<div class="none">
+				<label>content:</label><textarea rows="4" cols="" id="weibo_ctt">#QQ互联JSSDK测试#曾经沧海难为水，除却巫山不是云。</textarea><br>
+			</div>
+			<pre class="mono">{content : "#QQ互联JSSDK测试#曾经沧海难为水，除却巫山不是云。"}
+			</pre>
+			<label><input type="button" value=" 发送 " onclick="weibo();"></label>
+		</div>
+		<i>返回数据:</i><br>
+		<div class="pad_2">
+			<label></label><textarea rows="3" cols="20" readonly="1" class="callback" id="weibo_back"></textarea>
+		</div>
+	</div>
+
+<hr>
+
+<div class="share_cot">
+	<p class="title">4 获取openId 与 accessToken </p>
+	<div class="demo_left">
+		<div class="pad_1">
+			<p>用户通过“QQ登录”登录成功后，可以调用示例代码将获取到openId与accessToken</p>
+			<ul class="mono" style="padding-left:20px;">
+				<li>openId是用户身份的唯一标识，可以保存在本地，以便用户下次登录时可对应到其之前的身份信息，不需要重新授权。</li>
+				<li>accessToken是表示当前用户在此网站/应用的登录状态与授权信息，也可以保存在本地。</li>
+			</ul>
+		</div>
+		<div class="pad_2">
+			<label><input value=" 获取 " onclick="getToken();" type="button"></label>
+		</div>
+	</div>
+</div>
+
+
+
+   
+  
+
+<script type="text/javascript">
+//		QC_CONSOLE_DEBUG_LEVEL = 1;
+</script>
+<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc.js#appId=100269916" charset="UTF-8"></script>
+
+<script type="text/javascript">
+
+	function weibo(){
+		if(QC.Login.check()){
+			var ctt = document.getElementById("weibo_ctt").value;
+			if(!ctt) {
+				alert('亲！把数据填完。。');
+				return;
+			}
+
+			var weibo_back = document.getElementById("weibo_back");
+			weibo_back.value = "";
+			QC.api("add_t", {content:ctt})
+				.success(function(s){//成功回调
+					alert('发送微博成功，请到腾讯微博内查看！');
+					QC.Console.log(' [S] weibo seq no. : ' + s.seq);
+				})
+				.error(function(f){//失败回调
+					alert('发送微博失败，错误码：'+f.code);
+					QC.Console.log(" [E] weibo seq no. "+f.seq);
+				})
+				.complete(function(c){//完成请求回调
+					weibo_back.value = c.stringifyData();
+				});
+		}else{
+			alert("请登录后体验");
+		}
+	}
+
+	function fenxiang(){
+		if(QC.Login.check()){
+			var paras = {
+				images:document.getElementById("fenxiang_images").value,
+				title:document.getElementById("fenxiang_title").value,
+				url:document.getElementById("fenxiang_url").value,
+				comment:document.getElementById("fenxiang_comment").value,
+				summary:document.getElementById("fenxiang_summary").value
+			};
+
+			for(var i in paras) {
+				if(!(paras[i]+"")) {
+					alert('亲！把数据填完。。');
+					return;
+				}
+			}
+
+			var fenxiang_back = document.getElementById("fenxiang_back");
+			fenxiang_back.value = "";
+			QC.api("add_share", paras)
+				.success(function(s){//请自行改写成功回调
+					alert('分享成功，请到空间内查看！');
+					QC.Console.log(" [S] fenxiang seq no. "+s.seq);
+				})
+				.error(function(f){//请自行改写失败回调
+					alert('分享失败，错误码：'+f.code);
+					QC.Console.log(" [E] fenxiang seq no. "+f.seq);
+				})
+				.complete(function(c){//请自行改写完成请求回调
+					fenxiang_back.value = c.stringifyData();
+				});
+		}else{
+			alert("请登录后体验");
+		}
+	}
+
+	function getInfo() {
+		if(QC.Login.check()){
+			var getInfo_back = document.getElementById("getInfo_back");
+			getInfo_back.value = "";
+		
+			QC.api("get_user_info")
+				.success(function(s){//成功回调
+					alert("获取用户信息成功！当前用户昵称为："+s.data.nickname);
+				})
+				.error(function(f){//失败回调
+					alert("获取用户信息失败！");
+				})
+				.complete(function(c){//完成请求回调
+					alert("获取用户信息完成！");
+					getInfo_back.value = c.stringifyData();
+				});
+		}else{
+			alert("请登录后体验");
+		}
+	}
+
+	function getToken() {
+		if(QC.Login.check()){
+			QC.Login.getMe(function(openId, accessToken){
+				alert(["当前登录用户的", "openid为："+openId, "accessToken为："+accessToken].join("\n"));	
+			});
+			//这里可以调用自己的保存接口
+			//...
+		}else{
+			alert("请登录后体验");
+		}
+	}
+
+	//callback为jssdk保留字，测试是否会覆盖当前页面函数
+	function callback(){
+		alert("我很好，我很好");
+	}
+
+
+	function pageInit() {
+		document.getElementById("qq_login_btn").innerHTML = document.getElementById("qq_login_btn").getAttribute("_origText");
+	}
+
+	//获取jsdoc示例
+	function getDoc() {
+		QC.api.getDoc("get_user_info", function(doc){
+			var str = QC.JSON.stringify(doc);
+			alert(str);
+		});
+	}
+
+	pageInit();
+
+	//加入QQ登录按钮
+	QC.Login({
+		btnId:"qq_login_btn"
+	});
+
+
+
+</script>
+<span id="qqLoginBtn"></span>
+<script type="text/javascript">
+   //调用QC.Login方法，指定btnId参数将按钮绑定在容器节点中
+   QC.Login({
+       //btnId：插入按钮的节点id，必选
+       btnId:"qqLoginBtn",	
+       //用户需要确认的scope授权项，可选，默认all
+       scope:"all",
+       //按钮尺寸，可用值[A_XL| A_L| A_M| A_S|  B_M| B_S| C_S]，可选，默认B_S
+       size: "A_XL"
+   }, function(reqData, opts){//登录成功
+       //根据返回数据，更换按钮显示状态方法
+       var dom = document.getElementById(opts['btnId']),
+       _logoutTemplate=[
+            //头像
+            '<span><img src="{figureurl}" class="{size_key}"/></span>',
+            //昵称
+            '<span>{nickname}</span>',
+            //退出
+            '<span><a href="javascript:QC.Login.signOut();">退出</a></span>'	
+                     ].join("");
+       dom && (dom.innerHTML = QC.String.format(_logoutTemplate, {
+           nickname : QC.String.escHTML(reqData.nickname),
+           figureurl : reqData.figureurl
+              }));
+   }, function(opts){//注销成功
+alert('QQ登录 注销成功');
+                     }
+);
+</script>
+</div></div></div></div></div></div>
